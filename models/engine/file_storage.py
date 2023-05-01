@@ -12,7 +12,7 @@ from models.review import Review
 from models.state import State
 from models.user import User
 
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+classes = {"Amenity": Amenity, "Place": Place, "City": City,
            "Review": Review, "State": State, "User": User}
 
 
