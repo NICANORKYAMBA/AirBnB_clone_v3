@@ -13,7 +13,7 @@ from models.state import State
 from models.user import User
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+           "Review": Review, "State": State, "User": User}
 
 
 class FileStorage:
@@ -55,7 +55,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except Exception:
             pass
 
     def delete(self, obj=None):
@@ -64,6 +64,39 @@ class FileStorage:
             key = obj.__class__.__name__ + '.' + obj.id
             if key in self.__objects:
                 del self.__objects[key]
+
+    def get(self, cls, id):
+        """_summary_
+
+        Args:
+            id (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        obj = "{}.{}".format(cls.__name__, id)
+        for key, value in self.__objects.items():
+            if key == obj:
+                return value
+        return None
+
+    def count(self, cls=None):
+        """_summary_
+
+        Args:
+            cls (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            _type_: _description_
+        """
+        if cls is not None:
+            new_dict = {}
+            for key, value in self.__objects.items():
+                if cls == value.__class__ or cls == value.__class__.__name__:
+                    new_dict[key] = value
+            return len(new_dict)
+
+        return len(self.__objects)
 
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""

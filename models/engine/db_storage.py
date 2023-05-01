@@ -64,6 +64,37 @@ class DBStorage:
         if obj is not None:
             self.__session.delete(obj)
 
+    def get(self, cls, id):
+        """_summary_
+
+        Args:
+            id (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        obj = self.__session.query(cls).filter(cls.id == id).first()
+        return obj
+
+    def count(self, cls=None):
+        """_summary_
+
+        Args:
+            cls (_type_, optional): _description_. Defaults to None.
+
+        Returns:
+            _type_: _description_
+        """
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+
+        return len(new_dict)
+
     def reload(self):
         """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
