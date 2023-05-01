@@ -69,10 +69,10 @@ class FileStorage:
         """_summary_
 
         Args:
-            id (_type_): _description_
+            id (string): _description_
 
         Returns:
-            _type_: _description_
+            object: _description_
         """
         obj = "{}.{}".format(cls.__name__, id)
         for key, value in self.__objects.items():
