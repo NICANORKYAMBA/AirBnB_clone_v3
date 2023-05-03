@@ -20,7 +20,7 @@ def get_all_places(city_id):
     places = (
             [place.to_dict() for place in all_es
                 if place.city_id == city_id])
-    jsonify(places)
+    return jsonify(places)
 
 
 @app_views.route(
