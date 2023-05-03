@@ -16,9 +16,9 @@ def get_all_places(city_id):
     if city is None:
         abort(404)
 
-    all_places = storage.all(Place).values()
+    all_es = storage.all(Place).values()
     places = (
-            [place.to_dict() for place in all_places
+            [place.to_dict() for place in all_es
                 if place.city_id == city_id])
     jsonify(places)
 
@@ -42,7 +42,7 @@ def delete_place(place_id):
         abort(404)
     storage.delete(place)
     storage.save()
-    return jsonify({})
+    return jsonify({}), 200
 
 
 @app_views.route(
@@ -61,9 +61,9 @@ def create_place(city_id):
     if 'name' not in data:
         abort(400, 'Missing name')
     user_id = data['user_id']
-    user = storage.get('User', user_id)
+    user = storage.get(User, user_id)
     if user is None:
-        abort(400)
+        abort(404)
 
     data['city_id'] = city_id
     place = Place(**data)
