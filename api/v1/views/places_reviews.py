@@ -15,7 +15,10 @@ def get_all_reviews(place_id):
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
-    reviews = [review.to_dict() for review in place.reviews]
+    all_reviews = storage.all("Review").values()
+    reviews = [
+            review.to_dict() for review in all_reviews
+            if review.place_id == place_id]
     return jsonify(reviews)
 
 
@@ -77,5 +80,5 @@ def update_review(review_id):
     for key, value in data.items():
         if key not in ignore_keys:
             setattr(review, key, value)
-    review.save()
+    storage.save()
     return jsonify(review.to_dict()), 200
